@@ -1,3 +1,5 @@
+import 'package:bitcoin_ticker/networking.dart';
+
 const List<String> currenciesList = [
   'AUD',
   'BRL',
@@ -28,4 +30,17 @@ const List<String> cryptoList = [
   'LTC',
 ];
 
-class CoinData {}
+class CoinData {
+  Future<dynamic> getCoinData(String currency, String coin) async {
+    String url = 'https://rest.coinapi.io/v1/exchangerate/$coin/$currency';
+    NetworkHelper networkHelper = NetworkHelper(url);
+    try {
+      var data = await networkHelper.getData();
+      int exchangeRateI = data['rate'].round();
+      String exchangeRate = exchangeRateI.toString();
+      return exchangeRate;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
